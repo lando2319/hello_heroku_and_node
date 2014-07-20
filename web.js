@@ -3,11 +3,11 @@ var logfmt = require("logfmt");
 var app = express();
 var pg = require('pg');
 
-pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-  client.query('SELECT * FROM your_table', function(err, result) {
-    done();
-    if(err) return console.error(err);
-    console.log(result.rows);
+pg.connect(process.env.DATABASE_URL, function(err, client) {
+  var query = client.query('SELECT * FROM your_table');
+
+  query.on('row', function(row) {
+    console.log(JSON.stringify(row));
   });
 });
 
